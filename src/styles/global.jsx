@@ -1,10 +1,13 @@
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
 body{
     background-color: #121214;
 }
 
 header{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     padding: 1em;
 }
@@ -68,4 +71,12 @@ a[href]{
     article{
         display: block;
     }
+
+    header{
+        justify-content: space-evenly;
+        padding: 1em  11em;
+    }
 }
+`
+
+export default GlobalStyle;

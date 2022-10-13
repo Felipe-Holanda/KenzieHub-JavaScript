@@ -2,51 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, HeaderTitle, Headline, Select, Title2, Input, ErrorText } from "../../styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import schemaRegister from "../../schemas/schemaRegister";
 import { toast } from "react-toastify";
-import axios from "axios";
+import api from "../../services/api";
 
 export default function Register() {
 
-    const formSchema = yup.object().shape({
-        name: yup.string().required("Campo obrigatório").matches(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi, "Preencha com Nome e Sobrenome!"),
-        email: yup.string().email("E-mail inválido").required("Campo obrigatório").matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, "E-mail inválido"),
-        password: yup.string().min(6, "Mínimo de 6 caracteres").required("Campo obrigatório").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/, "Sua senha deve conter: 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial (Apenas: @#!)"),
-        confirmPassword: yup.string().oneOf([yup.ref("password"), null], "As senhas não coincidem").required("Campo obrigatório"),
-        bio: yup.string().required("Preencha este campo").matches(/^.{10,}$/, "Não seja tímido, Fale um pouco sobre você! (15 Caracteres no mínimo)"),
-        contact: yup.string().required("Campo obrigatório"),
-        courseModule: yup.string().required("Campo obrigatório").matches(/^(1|2|3|4|5|6)$/, "Módulo inválido"),
-    })
-
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(formSchema),
-    });
-
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schemaRegister), });
     const navigate = useNavigate();
 
-    function onSubmit(data) {
-        try {
-            axios.post('https://kenziehub.herokuapp.com/users', {
-                email: data.email,
-                password: data.password,
-                name: data.nome,
-                bio: data.bio,
-                contact: data.contact,
-                course_module: identifyCourse(data.courseModule)
-            }).then(function (response) {
-                navigate('/');
-                toast.success("Cadastro realizado com sucesso, autentique-se na página de login!");
-            }).catch(function (error) {
-                if (error.response.data.message === "Email already registered") {
-                    toast.error("E-mail já cadastrado! Tente fazer login.");
-                } else if (error.response.data.message === "Email already exists") {
-                    toast.error("E-mail já cadastrado! Tente fazer login.");
-                }
-            })
-        } catch (error) {
-            toast.error("Erro ao cadastrar usuário!");
-        }
-    }
 
     function identifyCourse(arg) {
         if (arg === "1") {
@@ -64,7 +28,34 @@ export default function Register() {
         }
     }
 
-
+    const handleRegister = async (data) => {
+        await api.post('/users', {
+            email: data.email,
+            password: data.password,
+            name: data.nome,
+            bio: data.bio,
+            contact: data.contact,
+            course_module: identifyCourse(data.courseModule),
+        }).then((response) => {
+            api.post('/sessions', {
+                email: data.email,
+                password: data.password,
+            }).then((response) => {
+                localStorage.setItem('@TOKEN', response.data.token);
+                localStorage.setItem('@USER', JSON.stringify(response.data.user));
+                toast.success(`Bem vindo, ${response.data.user.name}! Você está logado!`);
+                navigate('/dashboard', { replace: true });
+                return response.data;
+            })
+        }).catch((error) => {
+            console.log(error);
+            if (error.response.status === 401) {
+                toast.error("E-mail já cadastrado!");
+            } else {
+                toast.error("Erro ao cadastrar usuário!");
+            }
+        });
+    }
 
     return (
         <div className="container">
@@ -72,11 +63,13 @@ export default function Register() {
                 <HeaderTitle>KenzieHub</HeaderTitle>
                 <button onClick={() => { navigate('/', { replace: true }) }}>Voltar</button>
             </header>
-            <Form onSubmit={handleSubmit((data) => { onSubmit(data) })}>
+            <Form onSubmit={handleSubmit((data) => {
+                handleRegister(data);
+            })}>
                 <Title2 position="center">Crie sua conta</Title2>
                 <Headline color="grey" position="center">Rapido e gratis, vamos nessa</Headline>
-                <Headline htmlFor="nome">Nome</Headline>
-                <Input type="text" placeholder="Digite aqui seu nome" {...register('name')} />
+                <Headline htmlFor="nome">Nome e Sobrenome</Headline>
+                <Input type="text" placeholder="Digite aqui seu nome e sobrenome" {...register('nome')} />
                 {errors.nome && <ErrorText>{errors.nome.message}</ErrorText>}
                 <Headline>Email</Headline>
                 <Input type="email" placeholder="Digite aqui seu email" {...register('email')} />
@@ -94,7 +87,7 @@ export default function Register() {
                 <Input type="text" placeholder="Opção de contato" {...register('contact')} />
                 {errors.contact && <ErrorText>{errors.contact.message}</ErrorText>}
                 <Headline>Módulo</Headline>
-                <Select {...register('course_module')}>
+                <Select {...register('courseModule')}>
                     <option value="0">Selecione o módulo</option>
                     <optgroup label="Front-End">
                         <option value="1">Módulo 1 - (Introdução a Front-End)</option>

@@ -1,4 +1,3 @@
-import './default.css';
 import styled from "styled-components";
 
 const colors = {

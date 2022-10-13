@@ -1,46 +1,14 @@
 import { HeaderTitle, Headline, Title1, Form, Input, Button, HeadlineBold, ButtonDisabed, ErrorText } from "../../styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import schemaLogin from "../../schemas/schemaLogin";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { useEffectX } from 'use-effect-x';
+import api from "../../services/api";
 
 export default function Login() {
-    // Tenta recuperar sessão do usuário caso ele tenha pressionado F5 ou saido da página sem querer e retornado antes do Token expirar
     const navigate = useNavigate();
-    useEffectX(() => {
-        if (localStorage.length > 0) {
-            if (localStorage.getItem('@TOKEN') !== null) {
-                try {
-                    const userToken = localStorage.getItem('@TOKEN');
-                    axios.get('https://kenziehub.herokuapp.com/profile', {
-                        headers: {
-                            Authorization: `Bearer ${userToken}`,
-                        }
-                    }).then((_response) => {
-                        navigate('/dashboard', { replace: true });
-                        toast.success('Recuperamos sua sessão anterior');
-                    }).catch((_error) => {
-
-                        toast.error('Encontramos dados de uma sessão anterior, mas ela expirou ou é iválida, autentique-se novamente!');
-                        localStorage.clear();
-                    });
-                } catch (error) {
-                }
-            }
-        }
-    }, [toast.success()]);
-
-
-
-    const schemaLogin = yup.object().shape({
-        email: yup.string().email("Email inválido").required("Campo obrigatório"),
-        password: yup.string().required("Campo obrigatório"),
-    });
-
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schemaLogin) });
 
     const [type, setType] = useState('password');
@@ -63,37 +31,36 @@ export default function Login() {
         }
     }
 
-    function onSubmit(data) {
-        const body = {
+    const handleLogin = async (data) => {
+        await api.post('/sessions', {
             email: data.email,
             password: data.password,
-        }
-        try {
-            axios.post('https://kenziehub.herokuapp.com/sessions', body)
-                .then((response) => {
-                    console.log(response)
-                    localStorage.setItem("@TOKEN", response.data.token);
-                    localStorage.setItem("@USERID", response.data.user.id)
-                    navigate('/dashboard');
-                    toast.success('Login efetuado com sucesso!');
-                }).catch((e) => {
-                    if (e.response.status === 401) {
-                        toast.error('Email ou senha inválidos!');
-                    } else {
-                        toast.error('Erro ao efetuar login, tente novamente mais tarde!');
-                    }
-                });
-        } catch (e) {
-
-        }
+        }).then((response) => {
+            localStorage.setItem('@TOKEN', response.data.token);
+            localStorage.setItem('@USER', JSON.stringify(response.data.user));
+            toast.success(`Bem vindo, ${response.data.user.name}! Você está logado!`);
+            navigate('/dashboard', { replace: true });
+            return response.data;
+        }).catch((error) => {
+            if (error.response.status === 401) {
+                toast.error('Email ou senha incorretos!');
+                return 401;
+            } else {
+                toast.error('Erro ao fazer login!');
+                return 500;
+            }
+        });
     }
+
 
     return (
         <div className="container">
             <header>
                 <HeaderTitle>KenzieHub</HeaderTitle>
             </header>
-            <Form onSubmit={handleSubmit((data) => onSubmit(data))}>
+            <Form onSubmit={handleSubmit((data) => {
+                handleLogin(data);
+            })}>
                 <Title1 position={'center'}>Login</Title1>
                 <Headline>Email</Headline>
                 <Input type='email' placeholder='Digite seu email' {...register('email')} />
