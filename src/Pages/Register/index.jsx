@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button, Form, HeaderTitle, Headline, Select, Title2, Input, ErrorText } from "../../components/styles";
+import { Button, Form, HeaderTitle, Headline, Select, Title2, Input, ErrorText } from "../../styles";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -9,9 +9,9 @@ import axios from "axios";
 export default function Register() {
 
     const formSchema = yup.object().shape({
-        nome: yup.string().required("Campo obrigatório").matches(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi, "Preencha com Nome e Sobrenome!"),
+        name: yup.string().required("Campo obrigatório").matches(/\b[A-Za-zÀ-ú][A-Za-zÀ-ú]+,?\s[A-Za-zÀ-ú][A-Za-zÀ-ú]{2,19}\b/gi, "Preencha com Nome e Sobrenome!"),
         email: yup.string().email("E-mail inválido").required("Campo obrigatório").matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, "E-mail inválido"),
-        password: yup.string().min(6, "Mínimo de 6 caracteres").required("Campo obrigatório").matches(/^(?=.*[A-Za-z])(?=.*\d)(@|#|!)[A-Za-z\d]{6,}$/, "Sua senha deve conter: 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial (Apenas: @#!)"),
+        password: yup.string().min(6, "Mínimo de 6 caracteres").required("Campo obrigatório").matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{4,8}$/, "Sua senha deve conter: 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial (Apenas: @#!)"),
         confirmPassword: yup.string().oneOf([yup.ref("password"), null], "As senhas não coincidem").required("Campo obrigatório"),
         bio: yup.string().required("Preencha este campo").matches(/^.{10,}$/, "Não seja tímido, Fale um pouco sobre você! (15 Caracteres no mínimo)"),
         contact: yup.string().required("Campo obrigatório"),
@@ -76,7 +76,7 @@ export default function Register() {
                 <Title2 position="center">Crie sua conta</Title2>
                 <Headline color="grey" position="center">Rapido e gratis, vamos nessa</Headline>
                 <Headline htmlFor="nome">Nome</Headline>
-                <Input type="text" placeholder="Digite aqui seu nome" {...register('nome')} />
+                <Input type="text" placeholder="Digite aqui seu nome" {...register('name')} />
                 {errors.nome && <ErrorText>{errors.nome.message}</ErrorText>}
                 <Headline>Email</Headline>
                 <Input type="email" placeholder="Digite aqui seu email" {...register('email')} />
@@ -94,7 +94,7 @@ export default function Register() {
                 <Input type="text" placeholder="Opção de contato" {...register('contact')} />
                 {errors.contact && <ErrorText>{errors.contact.message}</ErrorText>}
                 <Headline>Módulo</Headline>
-                <Select {...register('courseModule')}>
+                <Select {...register('course_module')}>
                     <option value="0">Selecione o módulo</option>
                     <optgroup label="Front-End">
                         <option value="1">Módulo 1 - (Introdução a Front-End)</option>

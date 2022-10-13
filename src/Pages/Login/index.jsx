@@ -1,4 +1,4 @@
-import { HeaderTitle, Headline, Title1, Form, Input, Button, HeadlineBold, ButtonDisabed, ErrorText } from "../../components/styles";
+import { HeaderTitle, Headline, Title1, Form, Input, Button, HeadlineBold, ButtonDisabed, ErrorText } from "../../styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";

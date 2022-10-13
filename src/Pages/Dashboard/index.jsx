@@ -1,4 +1,4 @@
-import { HeaderTitle, Headline, Title1 } from "../../components/styles";
+import { HeaderTitle, Headline, Title1 } from "../../styles";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
