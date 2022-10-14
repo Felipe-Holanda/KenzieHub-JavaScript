@@ -74,7 +74,7 @@ export default function Login() {
         <div className="principal">
             <title>Kenzie Hub | Login</title>
 
-            <header>
+            <header id="loginPage">
                 <HeaderTitle>KenzieHub</HeaderTitle>
             </header>
             <Form onSubmit={handleSubmit((data) => {

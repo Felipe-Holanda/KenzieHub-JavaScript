@@ -11,9 +11,9 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const [userData, setUserData] = useState({});
 
+
     useEffect(() => {
         if (localStorage.length === 0 || localStorage.getItem('@TOKEN') === null) {
-            toast.error('Você precisa estar logado para acessar essa página!');
             navigate('/');
         } else {
             try {
@@ -25,7 +25,6 @@ export default function Dashboard() {
                 }).then((response) => {
                     setUserData(response.data);
                 }).catch((error) => {
-                    toast.error('Sessão inválida, autentique-se novamente!');
                     navigate('/');
                 });
             } catch (error) {
@@ -33,7 +32,6 @@ export default function Dashboard() {
             }
         }
     })
-
 
     function displayTechs() {
         if (userData.techs) {
@@ -72,6 +70,7 @@ export default function Dashboard() {
                 </div>
                 <Techs>
                     {displayTechs()}
+                    {userData.techs && userData.techs.length > 0 && <div id="bySide"><HeadlineBold>Quantidade de Tecnologias adicionadas:</HeadlineBold><Headline>{userData.techs ? userData.techs.length : 0}</Headline></div>}
                 </Techs>
             </div>
         </div>

@@ -110,7 +110,6 @@ export const HeaderTitle = styled.h1`
     font-size: 22px;
     color: ${colors.primary};
     font-family: 'Inter' , sans-serif;
-    text-align: center;
 `
 
 export const Title1 = styled.h1`

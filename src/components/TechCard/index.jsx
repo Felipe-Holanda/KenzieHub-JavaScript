@@ -18,8 +18,10 @@ export default function TechCard({ props }) {
 
     return (
         <>
-            {isEditModalVisible && <EditModal props={props} handleEditModal={handleEditModal} />}
-            {isDeleteModalVisible && <DeleteModal props={props} handleDeleteModal={handleDeleteModal} />}
+            <section>
+                {isEditModalVisible && <EditModal props={props} handleEditModal={handleEditModal} />}
+                {isDeleteModalVisible && <DeleteModal props={props} handleDeleteModal={handleDeleteModal} />}
+            </section>
             <ListItem>
                 <Title3>{props.title}</Title3>
                 <div>
