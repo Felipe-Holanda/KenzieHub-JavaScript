@@ -13,6 +13,15 @@ header{
     justify-content: space-between;
 }
 
+.bx{
+    cursor: pointer;
+}
+
+#addForm{
+    display: flex;
+    flex-direction: column;
+}
+
 header button{
     border: none;
     color: #fff;
@@ -34,20 +43,6 @@ section div{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-}
-
-section div i{
-    color: #868E96;
-    font-size: 1.5em;
-    font-weight: bold;
-    background-color: #2c3237;
-    padding: 2px;
-    border-radius: .2em;
-}
-
-section div i:hover{
-    cursor: pointer;
-    background-color: #363d44;
 }
 
 .center{
@@ -75,14 +70,33 @@ ul{
     border-radius: .2em;
 }
 
+.footerInformation{
+    display: flex;
+    flex-direction: column;
+    padding: .5em 2em;
+}
+
+#editModal{
+    width: 95vw;
+    max-width: 500px;
+}
+
+#bySide{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5em 1em;
+}
+
+#bySide button{
+    margin: 1em;
+}
+
 #techsContainer{
     border-radius: .2em;
     padding: .5em 1em;
     outline: .2px solid #868e9660;
-}
-
-li i{
-    margin-left: .5em;
 }
 
 li div{

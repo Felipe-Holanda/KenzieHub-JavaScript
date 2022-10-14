@@ -1,4 +1,4 @@
-import { HeaderTitle, Headline, Title1 } from "../../styles";
+import { HeaderTitle, Headline, HeadlineBold, Title1, Title3 } from "../../styles";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -34,6 +34,26 @@ export default function Dashboard() {
         }
     })
 
+
+    function displayTechs() {
+        if (userData.techs) {
+            if (userData.techs.length === 0) {
+                return (
+                    <li>
+                        <Title3 position="center">Parece que você não tem nenhuma tecnologia adicionada!</Title3>
+                        <HeadlineBold color="grey" position="center">Adicione uma tecnologia para visualizá-la aqui!</HeadlineBold>
+                    </li>
+                )
+            } else {
+                return userData.techs.map((tech) => {
+                    return (
+                        <TechCard key={tech.id} props={tech} setUserData={setUserData} />
+                    )
+                })
+            }
+        }
+    }
+
     return (
         <div className="principal">
             <title>Kenzie Hub | Dashboard</title>
@@ -51,7 +71,7 @@ export default function Dashboard() {
                     <Headline color="grey" position="center">{userData.course_module}</Headline>
                 </div>
                 <Techs>
-                    <TechCard props={{ name: "React", level: "Intermediário" }} />
+                    {displayTechs()}
                 </Techs>
             </div>
         </div>

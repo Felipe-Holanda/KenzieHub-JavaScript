@@ -1,33 +1,33 @@
-import api from "../../services/api";
-import { toast } from "react-toastify";
-import { HeadlineBold, ListItem, Title3 } from "../../styles";
+import { HeadlineBold, LiBtn, ListItem, Title3 } from "../../styles";
+import { useState } from "react";
+import EditModal from "../EditModal";
+import DeleteModal from "../DeleteModal";
 
 export default function TechCard({ props }) {
 
-    function handleDeleteTech(arg) {
-        api.delete(`/users/techs/${arg}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }).then((response) => {
-            toast.success('Tecnologia deletada com sucesso!');
-        }).catch((error) => {
-            if (error.response.status === 500) {
-                toast.error('Ocorreu um erro, tente novamente mais tarde!');
-            } else {
-                toast.error('Erro ao deletar tecnologia!');
-            }
-        });
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+    const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+    const handleEditModal = () => {
+        setIsEditModalVisible(!isEditModalVisible);
+    }
+
+    const handleDeleteModal = () => {
+        setIsDeleteModalVisible(!isDeleteModalVisible);
     }
 
     return (
-        <ListItem>
-            <Title3>{props.name}</Title3>
-            <div>
-                <HeadlineBold color="grey">{props.level}</HeadlineBold>
-                <i onClick={() => { handleDeleteTech(props.id) }} className='bx bxs-edit'></i>
-                <i onClick={() => { }} className='bx bxs-trash'></i>
-            </div>
-        </ListItem>
+        <>
+            {isEditModalVisible && <EditModal props={props} handleEditModal={handleEditModal} />}
+            {isDeleteModalVisible && <DeleteModal props={props} handleDeleteModal={handleDeleteModal} />}
+            <ListItem>
+                <Title3>{props.title}</Title3>
+                <div>
+                    <HeadlineBold color="grey">{props.status}</HeadlineBold>
+                    <LiBtn onClick={() => { handleEditModal() }} className='bx bxs-edit'></LiBtn>
+                    <LiBtn onClick={() => { handleDeleteModal() }} className='bx bxs-trash'></LiBtn>
+                </div>
+            </ListItem>
+        </>
     )
 }

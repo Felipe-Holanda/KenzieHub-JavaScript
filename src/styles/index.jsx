@@ -34,6 +34,20 @@ function alignIt(arg) {
     }
 }
 
+export const LiBtn = styled.i`
+    margin-left: .5em;
+    color: #868E96;
+    font-size: 1.5em;
+    background-color: #2c3237;
+    padding: 2px;
+    border-radius: .2em;
+
+    &&:hover{
+        cursor: pointer;
+        background-color: #363d44;
+    }
+`
+
 export const ErrorText = styled.small`
     color: red;
     text-align: center;
@@ -46,34 +60,6 @@ export const Form = styled.form`
     flex-direction: column;
     padding: 1rem;
     background-color: ${greys.grey3};
-`
-export const Modal = styled.span`
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
-
-export const ModalHeader = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    background-color: ${greys.grey2};
-`
-
-export const ModalBody = styled.div`
-    display: flex;
-    flex-direction: column;
-    background-color: ${greys.grey3};
-`
-export const ModalContent = styled.div`
-    display: flex;
-    flex-direction: column;
 `
 
 export const Button = styled.button`
