@@ -1,21 +1,24 @@
 import { HeaderTitle, Headline, HeadlineBold, Title1, Title3 } from "../../styles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Techs from "../../components/Techs";
 import TechCard from "../../components/TechCard";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Dashboard() {
+
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
     const navigate = useNavigate();
     const [userData, setUserData] = useState({});
 
-
     useEffect(() => {
-        if (localStorage.length === 0 || localStorage.getItem('@TOKEN') === null) {
+        if (!isAuthenticated) {
             navigate('/');
         } else {
+
             try {
                 const userToken = localStorage.getItem('@TOKEN');
                 axios.get('https://kenziehub.herokuapp.com/profile', {
@@ -58,9 +61,10 @@ export default function Dashboard() {
             <header>
                 <HeaderTitle>KenzieHub</HeaderTitle>
                 <button onClick={() => {
-                    toast.success('Sessão encerrada com sucesso!');
+                    toast.info('Sua sessão foi encerrada.');
                     navigate('/', { replace: true })
                     localStorage.clear();
+                    setIsAuthenticated(false);
                 }}>Sair</button>
             </header>
             <div className="container">
