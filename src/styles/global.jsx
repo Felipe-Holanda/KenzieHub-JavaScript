@@ -13,6 +13,15 @@ header{
     justify-content: space-between;
 }
 
+.bx{
+    cursor: pointer;
+}
+
+#addForm{
+    display: flex;
+    flex-direction: column;
+}
+
 header button{
     border: none;
     color: #fff;
