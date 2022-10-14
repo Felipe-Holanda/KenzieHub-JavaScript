@@ -1,4 +1,4 @@
-import { Title1 } from "../../styles"
+import { LiBtn, Title1 } from "../../styles"
 import { useState } from "react"
 import AddModal from "../AddModal";
 
@@ -15,9 +15,9 @@ export default function Techs({ children }) {
             <section id="techsContainer">
                 <div>
                     <Title1 position="center">Tecnologias</Title1>
-                    <i onClick={() => {
+                    <LiBtn onClick={() => {
                         handleModal()
-                    }} className='bx bx-plus'></i>
+                    }} className='bx bx-plus'></LiBtn>
 
                 </div>
                 <ul>

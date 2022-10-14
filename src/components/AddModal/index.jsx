@@ -55,9 +55,7 @@ export default function AddModal(props) {
                     }} className='bx bx-x'></i>
                 </ModalHeader>
                 <ModalBody>
-                    <form id="addForm" onSubmit={handleSubmit((data) => {
-                        onSubmit(data)
-                    })}>
+                    <form id="addForm" onSubmit={handleSubmit((data) => { onSubmit(data) })}>
                         <Headline>Nome da Tecnologia</Headline>
                         <Input type="text" placeholder="Escreva aqui o nome da Tecnologia" {...register('title')} />
                         {errors.title && <ErrorText>{errors.title.message}</ErrorText>}
@@ -69,7 +67,7 @@ export default function AddModal(props) {
                             <option value="3">Avançado</option>
                         </Select>
                         {errors.status && <ErrorText>{errors.status.message}</ErrorText>}
-                        <Button type="submit">Adicionar</Button>
+                        <Button type="submit">Cadastrar Tecnologia</Button>
                     </form>
                 </ModalBody>
             </ModalContent>

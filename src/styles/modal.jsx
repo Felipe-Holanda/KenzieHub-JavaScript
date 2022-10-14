@@ -23,7 +23,7 @@ export const Modal = styled.span`
 `
 
 export const ModalContent = styled.div`
-    width: 95%;
+    width: 95rem;
     max-width: 500px;
     display: flex;
     flex-direction: column;

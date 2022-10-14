@@ -34,6 +34,20 @@ function alignIt(arg) {
     }
 }
 
+export const LiBtn = styled.i`
+    margin-left: .5em;
+    color: #868E96;
+    font-size: 1.5em;
+    background-color: #2c3237;
+    padding: 2px;
+    border-radius: .2em;
+
+    &&:hover{
+        cursor: pointer;
+        background-color: #363d44;
+    }
+`
+
 export const ErrorText = styled.small`
     color: red;
     text-align: center;
