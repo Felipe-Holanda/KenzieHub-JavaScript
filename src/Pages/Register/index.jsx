@@ -58,7 +58,8 @@ export default function Register() {
     }
 
     return (
-        <div className="container">
+        <div className="principal">
+            <title>Kenzie Hub | Register</title>
             <header>
                 <HeaderTitle>KenzieHub</HeaderTitle>
                 <button onClick={() => { navigate('/', { replace: true }) }}>Voltar</button>

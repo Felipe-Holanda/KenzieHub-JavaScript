@@ -7,9 +7,10 @@ body{
 
 header{
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    padding: 1em 2em;
     align-items: center;
-    padding: 1em;
+    justify-content: space-between;
 }
 
 header button{
@@ -28,9 +29,29 @@ header button:hover{
     cursor: pointer;
 }
 
+section div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section div i{
+    color: #868E96;
+    font-size: 1.5em;
+    font-weight: bold;
+    background-color: #2c3237;
+    padding: 2px;
+    border-radius: .2em;
+}
+
+section div i:hover{
+    cursor: pointer;
+    background-color: #363d44;
+}
+
 .center{
     margin: 0 auto;
-    width: 40%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,7 +64,33 @@ article{
     margin: 0 auto;
 }
 
-i{
+.container{
+    padding: 1em 2em;
+}
+
+ul{
+    background-color: #212529;
+    list-style: none;
+    padding: .5em;
+    border-radius: .2em;
+}
+
+#techsContainer{
+    border-radius: .2em;
+    padding: .5em 1em;
+    outline: .2px solid #868e9660;
+}
+
+li i{
+    margin-left: .5em;
+}
+
+li div{
+    display: flex;
+    justify-content: space-between;
+}
+
+form i{
     position: inherit;
     width: fit-content;
     display: inline-flex;
@@ -59,23 +106,23 @@ a[href]{
     text-decoration: none;
 }
 
-@media screen and (min-width: 800px) {
-    form{
-        width: 33%;
+@media screen and (min-width: 768px) {
+    #root{
+        width: 50%;
         margin: 0 auto;
+    }
+
+    header{
+        text-align: center;
+        justify-content: space-between;
     }
 
     .center{
         flex-direction: row;
-    }
-    article{
-        display: block;
+        justify-content: space-between;
+        padding: 1em 0;
     }
 
-    header{
-        justify-content: space-evenly;
-        padding: 1em  11em;
-    }
 }
 `
 

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Techs from "../../components/Techs";
+import TechCard from "../../components/TechCard";
 
 export default function Dashboard() {
 
@@ -33,7 +35,8 @@ export default function Dashboard() {
     })
 
     return (
-        <div className="container">
+        <div className="principal">
+            <title>Kenzie Hub | Dashboard</title>
             <header>
                 <HeaderTitle>KenzieHub</HeaderTitle>
                 <button onClick={() => {
@@ -42,14 +45,15 @@ export default function Dashboard() {
                     localStorage.clear();
                 }}>Sair</button>
             </header>
-            <div className="center">
-                <Title1 position="center">Olá, {userData.name}!</Title1>
-                <Headline color="grey" position="center">{userData.course_module}</Headline>
+            <div className="container">
+                <div className="center">
+                    <Title1 position="center">Olá, {userData.name}!</Title1>
+                    <Headline color="grey" position="center">{userData.course_module}</Headline>
+                </div>
+                <Techs>
+                    <TechCard props={{ name: "React", level: "Intermediário" }} />
+                </Techs>
             </div>
-            <article className="onlyPC">
-                <Title1>Que pena! Estamos em desenvolvimento :(</Title1>
-                <Headline>Nossa aplicação está em desenvolvimento, em breve teremos novidades</Headline>
-            </article>
         </div>
     )
 }

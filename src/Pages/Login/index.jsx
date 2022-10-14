@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import schemaLogin from "../../schemas/schemaLogin";
 import { toast } from "react-toastify";
 import api from "../../services/api";
+import { useEffect } from "react";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -14,6 +15,22 @@ export default function Login() {
     const [type, setType] = useState('password');
     const [eye, setEye] = useState('bx bxs-show');
     const [toFocus, setToFocus] = useState(null);
+
+    useEffect(() => {
+        if (localStorage.length !== 0 && localStorage.getItem('@TOKEN') !== null) {
+            const userToken = localStorage.getItem('@TOKEN');
+            api.get('/profile', {
+                headers: {
+                    Authorization: `Bearer ${userToken}`,
+                }
+            }).then((response) => {
+                toast.success(`Bem-vindo de volta, ${response.data.name}! Sua sessão anterior foi restaurada!`);
+                navigate('/dashboard');
+            }).catch((error) => {
+                localStorage.clear();
+            });
+        }
+    }, [navigate])
 
     function togglePasswordView() {
         if (type === 'password') {
@@ -54,7 +71,9 @@ export default function Login() {
 
 
     return (
-        <div className="container">
+        <div className="principal">
+            <title>Kenzie Hub | Login</title>
+
             <header>
                 <HeaderTitle>KenzieHub</HeaderTitle>
             </header>
