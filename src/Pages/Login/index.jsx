@@ -23,22 +23,25 @@ export default function Login() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate('/dashboard');
-        } else if (localStorage.length !== 0 && localStorage.getItem('@TOKEN') !== null) {
-            const userToken = localStorage.getItem('@TOKEN');
-            api.get('/profile', {
-                headers: {
-                    Authorization: `Bearer ${userToken}`,
-                }
-            }).then((response) => {
-                setIsAuthenticated(true);
-                navigate('/dashboard');
-            }).catch((error) => {
-                localStorage.clear();
-                setIsAuthenticated(false);
-            });
+            navigate("/dashboard");
+        } else {
+
+            if ((localStorage.length !== 0 && localStorage.getItem('@TOKEN') !== null)) {
+                const userToken = localStorage.getItem('@TOKEN');
+                api.get('/profile', {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    }
+                }).then((response) => {
+                    setIsAuthenticated(true);
+                    navigate('/dashboard');
+                }).catch((error) => {
+                    localStorage.clear();
+                    setIsAuthenticated(false);
+                });
+            }
         }
-    }, [navigate])
+    }, [navigate, setIsAuthenticated, isAuthenticated]);
 
     function togglePasswordView() {
         if (type === 'password') {

@@ -16,9 +16,8 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (!isAuthenticated) {
-            navigate('/');
+            navigate("/");
         } else {
-
             try {
                 const userToken = localStorage.getItem('@TOKEN');
                 axios.get('https://kenziehub.herokuapp.com/profile', {
@@ -27,11 +26,9 @@ export default function Dashboard() {
                     }
                 }).then((response) => {
                     setUserData(response.data);
-                }).catch((error) => {
-                    navigate('/');
                 });
             } catch (error) {
-                console.log(error);
+                toast.error(error.response.data.message);
             }
         }
     })
