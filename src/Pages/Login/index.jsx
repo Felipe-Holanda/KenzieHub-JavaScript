@@ -6,9 +6,14 @@ import { useForm } from "react-hook-form";
 import schemaLogin from "../../schemas/schemaLogin";
 import { toast } from "react-toastify";
 import api from "../../services/api";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+
 
 export default function Login() {
+
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(schemaLogin) });
 
@@ -17,20 +22,26 @@ export default function Login() {
     const [toFocus, setToFocus] = useState(null);
 
     useEffect(() => {
-        if (localStorage.length !== 0 && localStorage.getItem('@TOKEN') !== null) {
-            const userToken = localStorage.getItem('@TOKEN');
-            api.get('/profile', {
-                headers: {
-                    Authorization: `Bearer ${userToken}`,
-                }
-            }).then((response) => {
-                toast.success(`Bem-vindo de volta, ${response.data.name}! Sua sessão anterior foi restaurada!`);
-                navigate('/dashboard');
-            }).catch((error) => {
-                localStorage.clear();
-            });
+        if (isAuthenticated) {
+            navigate("/dashboard");
+        } else {
+
+            if ((localStorage.length !== 0 && localStorage.getItem('@TOKEN') !== null)) {
+                const userToken = localStorage.getItem('@TOKEN');
+                api.get('/profile', {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    }
+                }).then((response) => {
+                    setIsAuthenticated(true);
+                    navigate('/dashboard');
+                }).catch((error) => {
+                    localStorage.clear();
+                    setIsAuthenticated(false);
+                });
+            }
         }
-    }, [navigate])
+    }, [navigate, setIsAuthenticated, isAuthenticated]);
 
     function togglePasswordView() {
         if (type === 'password') {
@@ -74,7 +85,7 @@ export default function Login() {
         <div className="principal">
             <title>Kenzie Hub | Login</title>
 
-            <header>
+            <header id="loginPage">
                 <HeaderTitle>KenzieHub</HeaderTitle>
             </header>
             <Form onSubmit={handleSubmit((data) => {

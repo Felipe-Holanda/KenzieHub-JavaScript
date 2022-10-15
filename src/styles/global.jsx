@@ -76,6 +76,23 @@ ul{
     padding: .5em 2em;
 }
 
+#errorPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    color: #868e9663;
+}
+
+#errorPage i{
+    font-size: 100px;
+}
+
+#errorPage a{
+    margin-top: 1em;
+}
+
 #editModal{
     width: 95vw;
     max-width: 500px;
@@ -120,16 +137,16 @@ a[href]{
     text-decoration: none;
 }
 
+#loginPage{
+    justify-content: center;
+}
+
 @media screen and (min-width: 768px) {
     #root{
         width: 50%;
         margin: 0 auto;
     }
 
-    header{
-        text-align: center;
-        justify-content: space-between;
-    }
 
     .center{
         flex-direction: row;

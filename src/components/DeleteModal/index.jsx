@@ -17,6 +17,20 @@ export default function DeleteModal(props) {
             toast.error("Erro ao deletar tecnologia!")
         });
     }
+
+
+    const formatDate = (date) => {
+        const lastEdit = date
+        const splitDate = lastEdit.split("T")
+        const dateFormated = splitDate[0].split("-")
+        const actualDate = dateFormated[2] + "/" + dateFormated[1] + "/" + dateFormated[0]
+
+        const timeFormated = splitDate[1].split(":")
+        const actualTime = timeFormated[0] - 3 + ":" + timeFormated[1]
+
+        return actualDate + " às " + actualTime
+    }
+
     return (
         <Modal>
             <ModalContent>
@@ -30,7 +44,7 @@ export default function DeleteModal(props) {
                     </div>
                     <div className="footerInformation">
                         <HeadlineBold>Você adicionou esta tecnologia em:</HeadlineBold>
-                        <Headline>{props.props.created_at}</Headline>
+                        <Headline color="grey">{formatDate(props.props.created_at)}</Headline>
                     </div>
                 </ModalBody>
             </ModalContent>

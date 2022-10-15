@@ -37,6 +37,17 @@ export default function EditModal(props) {
         })
     }
 
+    const formatDate = (date) => {
+        const lastEdit = date
+        const splitDate = lastEdit.split("T")
+        const dateFormated = splitDate[0].split("-")
+        const actualDate = dateFormated[2] + "/" + dateFormated[1] + "/" + dateFormated[0]
+
+        const timeFormated = splitDate[1].split(":")
+        const actualTime = timeFormated[0] - 3 + ":" + timeFormated[1]
+
+        return actualDate + " às " + actualTime
+    }
 
 
     return (
@@ -60,7 +71,7 @@ export default function EditModal(props) {
                     </form>
                     <div className="footerInformation">
                         <HeadlineBold>Ultima edição deste dado:</HeadlineBold>
-                        <Headline>{props.props.updated_at}</Headline>
+                        <Headline color="grey">{formatDate(props.props.updated_at)}</Headline>
                     </div>
                 </ModalBody>
             </ModalContent>
